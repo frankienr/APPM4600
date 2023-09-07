@@ -21,6 +21,7 @@ def driver():
 
     #PROBLEM 2
     print('Matrix vector multiplication by "hand"')
+    # this will represent dong the matrix multiplication manually
     m = np.array([[1,2], [3,4]])
     n = np.array([5,6])
     ans = np.array([])
