@@ -43,6 +43,7 @@ def driver():
     print(ans)
 
     print('Matrix vector multiplication with numpy')
+    #here we use the built in fuction to matrix multiply
     m = np.array([[1,2], [3,4]])
     n = np.array([5,6])
     ans = np.matmul(m,n)
