@@ -53,6 +53,7 @@ def driver():
     m = np.array([[1,2,3,4], [5,6,7,8], [9, 10, 11, 12], [13, 14, 15, 16]])
     n = np.array([1,2,3,4])
     ans = np.matmul(m,n)
+    #we can print matrices out and it will auto make them look nice
     print(m, n, '=', ans)
     return
 
