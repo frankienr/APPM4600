@@ -8,6 +8,8 @@ def driver():
     # this is a function handle. You can use it to define
     # functions instead of using a subroutine like you
     # have to in a true low level language
+
+    #these will produce the vectors
     f = lambda x: x
     g = lambda x: ((-1)**x)*(1/x)
     y = f(x)
