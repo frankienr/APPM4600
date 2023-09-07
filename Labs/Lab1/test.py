@@ -60,6 +60,7 @@ def driver():
 def dotProduct(x,y,n):
 # Computes the dot product of the n x 1 vectors x and y
     dp = 0.
+    #starting with 0. so we are not accidentally using integers
     for j in range(n):
         dp = dp + x[j]*y[j]
     return dp
