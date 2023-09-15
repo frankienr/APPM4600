@@ -10,6 +10,8 @@ for k in range(1, 30):
 
 
 print('the sum is: ', S)
+
+
 theta = np.linspace(0, 2*np.pi, 400)
 R = 1.2
 dr = 0.1
