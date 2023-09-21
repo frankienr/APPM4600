@@ -18,9 +18,11 @@ def driver():
     x = x[1:count]
     diffs = convergence(x, xstar)
     #print(x)
-    print(diffs)
-    plt.plot(range(len(diffs)), diffs)
-    plt.show()
+    p = aitken(x, tol, Nmax)
+    print(x)
+    print(p)
+    #print(diffs)
+    
 
     
 
@@ -62,4 +64,14 @@ def convergence(vec, p):
     #print (diffs)
     
     return diffs
+
+def aitken(x, tol, Nmax):
+    pHat = np.zeros((len(x), 1))
+    for i in range(1, len(x)-3):
+        pHat[i] = x[i]-((x[i+1]-x[i])**2)/(x[i+2]-2*x[i+1]+x[i])
+        if(i>1):
+            if(abs(pHat[i]-pHat[i-1]) < tol):
+                return pHat
+
+    return pHat
 driver()
