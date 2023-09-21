@@ -1,26 +1,22 @@
+# import libraries
 import numpy as np
-import matplotlib.pyplot as plt
 def driver():
-    y = lambda x: x - 4*np.sin(2*x) - 3
-    x = np.linspace(-2, 8, 100)
+# test functions
+    f1 = lambda x: x - ((x**5)-7)/(5*x**4)
 
-    yx = y(x)
 
-    plt.plot(x, yx)
-    plt.title("f(x) = x - 4sin(2x) - 3")
-    plt.grid(True, which='both')
-    plt.axhline(y=0, color='k')
-    plt.show()
-
-    Nmax = 100
+    Nmax = 10
     tol = 1e-10
 # test f1 '''
-    x0 = 4
-    f1 =lambda x: -1*np.sin(2*x) +5/4*x-3/4
-    [xstar,ier] = fixedpt(f1,x0,tol,Nmax)
+    x0 = 1
+    
+    [xstar,ier,x] = fixedpt(f1,x0,tol,Nmax)
     print('the approximate fixed point is:',xstar)
     print('f1(xstar):',f1(xstar))
     print('Error message reads:',ier)
+    for i in range(1,Nmax):
+        print(i, x[i])
+
 
 # define routines
 def fixedpt(f,x0,tol,Nmax):
@@ -28,16 +24,20 @@ def fixedpt(f,x0,tol,Nmax):
     ''' Nmax = max number of iterations'''
     ''' tol = stopping tolerance'''
     count = 0
+    x = np.zeros((Nmax,1))
+    x[1] = x0
     while (count <Nmax):
-        #print("f(x) =", f(x0))
+    
         count = count +1
         x1 = f(x0)
+        
         if (abs(x1-x0) <tol):
             xstar = x1
             ier = 0
-            return [xstar,ier]
+            return [xstar, ier, x]
         x0 = x1
+        x[count+1] = x1
     xstar = x1
     ier = 1
-    return [xstar, ier]
+    return [xstar, ier, x]
 driver()
