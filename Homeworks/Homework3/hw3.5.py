@@ -12,10 +12,18 @@ def driver():
     plt.axhline(y=0, color='k')
     plt.show()
 
+    f = lambda x: -1*np.sin(2*x) +5/4*x-3/4
+    fx = f(x)
+    plt.plot(x, fx)
+    plt.plot(x,x)
+    plt.title("fixed point equation")
+    plt.grid(True, which='both')
+    plt.show()
+
     Nmax = 100
-    tol = 1e-10
+    tol = 0.5*10**(-10)
 # test f1 '''
-    x0 = 4
+    x0 = 1.8
     f1 =lambda x: -1*np.sin(2*x) +5/4*x-3/4
     [xstar,ier] = fixedpt(f1,x0,tol,Nmax)
     print('the approximate fixed point is:',xstar)
@@ -32,7 +40,7 @@ def fixedpt(f,x0,tol,Nmax):
         #print("f(x) =", f(x0))
         count = count +1
         x1 = f(x0)
-        if (abs(x1-x0) <tol):
+        if (abs(x1-x0)/x1 <tol):
             xstar = x1
             ier = 0
             return [xstar,ier]
