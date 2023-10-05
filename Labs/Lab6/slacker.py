@@ -83,7 +83,7 @@ def approxNewton(x0,tol,Nmax):
     ''' Outputs: xstar= approx root, ier = error message, its = num its'''
     J = evalJ(x0)
     Jinv = inv(J) 
-    h = 10**(-7)
+    h = 0.01
     for its in range(Nmax):
         F = evalF(x0)
         x1 = x0 - Jinv.dot(F)
