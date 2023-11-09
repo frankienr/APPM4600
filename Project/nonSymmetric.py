@@ -1,48 +1,43 @@
 import numpy as np
 import time
+import math
 from numpy.linalg import inv
 from numpy.linalg import norm
 from scipy.linalg import lu_factor, lu_solve
 
 def driver():
-    n = 100
+    n = 500
     A = SPD(n)
+    Astar = A
+    for i in range(500):
+        x = math.floor(n * np.random.random())
+        y = math.floor(n * np.random.random())
+        if(x == y):
+            continue
+        Astar[x][y] = np.random.random()
+        #print("Changed A at", x, y)
     # A = np.array([[1,0,0],
     #               [0,7, 0],
     #               [0,0, 9]])
     b = np.random.random(n)
-    x = np.zeros(n)
-    f = lambda x: norm(x, A@x) - 2*norm(x, b)
-    #print("A:", A, "b:", b)
+   
+    #print("A:", A, "Astar:", Astar)
     tol = 1e-5
     Nmax = 1000
     t = time.time()
     for i in range(50):
         (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
     t = time.time() -t
-    print("Conjugate Gradient:")
+    print("Conjugate Gradient (symetric A):")
     print("Time:", t, "Itterations:", its, "Message:", ier)
-    #print("Conjugate Gradient soln:", xstar, "Itterations:", its, "Message:", ier)
-    #print(A@xstar - b)
-    t= time.time()
+
+    t = time.time()
     for i in range(50):
-        l, u = lu_factor(A)
-        xstar = lu_solve((l,u),b)
-    t = time.time() - t
-    print("Guassian Elimination:")
-    print("Time:", t)
-    #print("Guassian Elimination soln:", xstar)
-    t= time.time()
-    for i in range(50):
-        (xstar, its, ier) = steepest_descent(A, b, x, tol, Nmax)
-    t = time.time() - t
-    print("Steepest Descent:")
+        (xstar, ier, its) = ConjGrad(Astar, b, n, Nmax, tol)
+    t = time.time() -t
+    print("Conjugate Gradient (non-symetric A):")
     print("Time:", t, "Itterations:", its, "Message:", ier)
-    #print("Steepest Descent soln:", xstar, "Itterations:", its, "Message:", ier)
-
-
-
-
+    
 def SPD(n):
     Q,R = np.linalg.qr(np.random.random((n,n)))
     kon = 10
@@ -82,28 +77,5 @@ def ConjGrad(A, b, n, Nmax, tol):
     ier = 1
     return (xstar, ier, n)
 
-
-def steepest_descent(A, b, x, tol, Nmax):
-    """
-    Solve Ax = b
-    Parameter x: initial values
-    """
-    r = b - A @ x
-   
-    for k in range(0, Nmax):
-        p = r
-        q = A @ p
-        alpha = (p @ r) / (p @ q)
-        x = x + alpha * p
-        r0 = r
-        r = r - alpha * q
-        if(norm(r-r0) < tol):
-            ier = 0
-            return (x, k, ier)
-
-       
-    ier = 1
-    k = Nmax
-    return (x, k, ier)
 
 driver()
