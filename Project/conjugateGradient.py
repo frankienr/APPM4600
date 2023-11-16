@@ -7,9 +7,6 @@ from scipy.linalg import lu_factor, lu_solve
 def driver():
     n = 100
     A = SPD(n)
-    # A = np.array([[1,0,0],
-    #               [0,7, 0],
-    #               [0,0, 9]])
     b = np.random.random(n)
     x = np.zeros(n)
     f = lambda x: norm(x, A@x) - 2*norm(x, b)
@@ -69,7 +66,7 @@ def ConjGrad(A, b, n, Nmax, tol):
         #new search direction
         pk = rk + betak*p0
 
-        if((norm(xk-x0) < tol) or (norm(xk-x0)/norm(xk) < tol)):
+        if((norm(xk-x0)/norm(xk) < tol)):
             #success
             xstar = xk
             ier = 0
