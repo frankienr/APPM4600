@@ -9,7 +9,7 @@ def driver():
     A = SPD(n)
     b = np.random.random(n)
     x = np.zeros(n)
-    f = lambda x: norm(x, A@x) - 2*norm(x, b)
+    
     #print("A:", A, "b:", b)
     tol = 1e-5
     Nmax = 1000
