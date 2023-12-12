@@ -49,7 +49,7 @@ def driver():
     print(test)
 def create_rect(N,M):
     ''' this subroutine creates an ill-conditioned rectangular matrix'''
-    a = np.linspace(1,10,M)
+    a = np.linspace(10,20,M)
     d = 10**(-a)
     D2 = np.zeros((N,M))
     for j in range(0,M):

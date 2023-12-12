@@ -3,47 +3,51 @@ import time
 from numpy.linalg import inv
 from numpy.linalg import norm
 from scipy.linalg import lu_factor, lu_solve
+import matplotlib.pyplot as plt
 
 def driver():
-    n = 100
-    A = SPD(n)
-    b = np.random.random(n)
-    x = np.zeros(n)
+    itterations = np.zeros(200)
+    times = np.zeros(200)
+    n = 400
+    for c in range(10,200):
+        print(c)
+        temp = np.zeros(10)
+        
+        #for i in range(10):
+        A = SPD(n,c)
+        b = np.random.random(n)
+        tol = 1e-5
+        Nmax = 1000
+        t = time.time()
+        for j in range(50):
+            (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
+        t = time.time() - t
+        
+        #temp[i] = its
+        #itteration = sum(temp)/10
+        #itterations[c] = itteration
+        times[c] = t
+    #print(itterations)
+    # plt.plot(range(5,200), itterations[5:])
+    # plt.xlabel("Condition number")
+    # plt.ylabel("Average itterations to converge")
+    # plt.title("Effect of Condition Number on Iterations")
+    # plt.show()
+    plt.plot(range(10,200), times[10:])
+    plt.xlabel("Condition number ")
+    plt.ylabel("Time to compute")
+    plt.title("Effect of Condition Number on Time")
+    plt.show()
+
+
     
-    #print("A:", A, "b:", b)
-    tol = 1e-5
-    Nmax = 1000
-    t = time.time()
-    for i in range(50):
-        (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
-    t = time.time() -t
-    print("Conjugate Gradient:")
-    print("Time:", t, "Itterations:", its, "Message:", ier)
-    #print("Conjugate Gradient soln:", xstar, "Itterations:", its, "Message:", ier)
-    #print(A@xstar - b)
-    t= time.time()
-    for i in range(50):
-        l, u = lu_factor(A)
-        xstar = lu_solve((l,u),b)
-    t = time.time() - t
-    print("Guassian Elimination:")
-    print("Time:", t)
-    #print("Guassian Elimination soln:", xstar)
-    t= time.time()
-    for i in range(50):
-        (xstar, its, ier) = steepest_descent(A, b, x, tol, Nmax)
-    t = time.time() - t
-    print("Steepest Descent:")
-    print("Time:", t, "Itterations:", its, "Message:", ier)
-    #print("Steepest Descent soln:", xstar, "Itterations:", its, "Message:", ier)
+     
 
 
 
-
-def SPD(n):
+def SPD(n,c):
     Q,R = np.linalg.qr(np.random.random((n,n)))
-    kon = 10
-    eig = np.linspace(1,kon,n)
+    eig = np.linspace(1,c,n)
     E = np.diag(eig)
     A = Q@E@np.transpose(Q)
     return A
