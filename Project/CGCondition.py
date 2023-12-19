@@ -7,37 +7,35 @@ import matplotlib.pyplot as plt
 
 def driver():
     itterations = np.zeros(200)
-    times = np.zeros(200)
+    # times = np.zeros(200)
     n = 400
     for c in range(10,200):
         print(c)
-        temp = np.zeros(10)
-        
-        #for i in range(10):
-        A = SPD(n,c)
-        b = np.random.random(n)
-        tol = 1e-5
-        Nmax = 1000
-        t = time.time()
-        for j in range(50):
-            (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
-        t = time.time() - t
-        
-        #temp[i] = its
-        #itteration = sum(temp)/10
-        #itterations[c] = itteration
-        times[c] = t
-    #print(itterations)
-    # plt.plot(range(5,200), itterations[5:])
-    # plt.xlabel("Condition number")
-    # plt.ylabel("Average itterations to converge")
-    # plt.title("Effect of Condition Number on Iterations")
-    # plt.show()
-    plt.plot(range(10,200), times[10:])
-    plt.xlabel("Condition number ")
-    plt.ylabel("Time to compute")
-    plt.title("Effect of Condition Number on Time")
+        temp = 0
+        for i in range(10):
+            A = SPD(n,c)
+            b = np.random.random(n)
+            tol = 1e-5
+            Nmax = 1000
+            t = time.time()
+            for j in range(50):
+                (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
+            t = time.time() - t
+            print(its)
+            temp += its
+        itterations[c] = temp
+        # times[c] = t
+    print(itterations)
+    plt.plot(range(5,200), itterations[5:])
+    plt.xlabel("Condition number")
+    plt.ylabel("Average itterations to converge")
+    plt.title("Effect of Condition Number on Iterations")
     plt.show()
+    # plt.plot(range(10,200), times[10:])
+    # plt.xlabel("Condition number ")
+    # plt.ylabel("Time to compute")
+    # plt.title("Effect of Condition Number on Time")
+    # plt.show()
 
 
     
@@ -47,7 +45,8 @@ def driver():
 
 def SPD(n,c):
     Q,R = np.linalg.qr(np.random.random((n,n)))
-    eig = np.linspace(1,c,n)
+    eig = np.ones(n)
+    eig[0] = c
     E = np.diag(eig)
     A = Q@E@np.transpose(Q)
     return A

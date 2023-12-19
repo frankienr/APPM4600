@@ -7,50 +7,48 @@ import matplotlib.pyplot as plt
 
 def driver():
     c=10
-    ns = np.arange(100,450,10)
+    ns = np.arange(500,7000,100)
     timeCG = np.zeros(len(ns))
     timeSD = np.zeros(len(ns))
     timeLU = np.zeros(len(ns))
     for idx,n in enumerate(ns):
         print(n)
-        for j in range(5):
-            A = SPD(n, c)
-            b = np.random.random(n)
-            x = np.zeros(n)
-            tol = 1e-5
-            Nmax = 1000
-            t = time.time()
-            for i in range(50):
-                (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
-            t = time.time() -t
-            timeCG[idx] += t
-            # print("Conjugate Gradient:")
-            # print("Time:", t, "Itterations:", its, "Message:", ier)
-            #print("Conjugate Gradient soln:", xstar, "Itterations:", its, "Message:", ier)
-            #print(A@xstar - b)
-            t= time.time()
-            for i in range(50):
-                l, u = lu_factor(A)
-                xstar = lu_solve((l,u),b)
-            t = time.time() - t
-            timeLU[idx] += t
-            # print("Guassian Elimination:")
-            # print("Time:", t)
-            #print("Guassian Elimination soln:", xstar)
-            t= time.time()
-            for i in range(50):
-                (xstar, its, ier) = steepest_descent(A, b, x, tol, Nmax)
-            t = time.time() - t
-            timeSD[idx] += t
-            # print("Steepest Descent:")
-            # print("Time:", t, "Itterations:", its, "Message:", ier)
-            #print("Steepest Descent soln:", xstar, "Itterations:", its, "Message:", ier)
-    timeCG = timeCG/5
-    timeLU = timeLU/5
-    timeSD = timeSD/5
+        # for j in range(5):
+        A = SPD(n, c)
+        b = np.random.random(n)
+        x = np.zeros(n)
+        tol = 1e-5
+        Nmax = 1000
+        t = time.time()
+        for i in range(10):
+            (xstar, ier, its) = ConjGrad(A, b, n, Nmax, tol)
+        t = time.time() -t
+        timeCG[idx] += t
+        # print("Conjugate Gradient:")
+        # print("Time:", t, "Itterations:", its, "Message:", ier)
+        #print("Conjugate Gradient soln:", xstar, "Itterations:", its, "Message:", ier)
+        #print(A@xstar - b)
+        t= time.time()
+        for i in range(10):
+            l, u = lu_factor(A)
+            xstar = lu_solve((l,u),b)
+        t = time.time() - t
+        timeLU[idx] += t
+        # print("Guassian Elimination:")
+        # print("Time:", t)
+        #print("Guassian Elimination soln:", xstar)
+        # t= time.time()
+        # for i in range(50):
+        #     (xstar, its, ier) = steepest_descent(A, b, x, tol, Nmax)
+        # t = time.time() - t
+        # timeSD[idx] += t
+        # print("Steepest Descent:")
+        # print("Time:", t, "Itterations:", its, "Message:", ier)
+        #print("Steepest Descent soln:", xstar, "Itterations:", its, "Message:", ier)
+    
     plt.plot(ns,timeCG, label = "Conjugate Gradient")
     plt.plot(ns,timeLU, label = "Gaussian Elimination")
-    plt.plot(ns,timeSD, label = "Steepest Descent")
+    # plt.plot(ns,timeSD, label = "Steepest Descent")
     plt.legend()
     plt.xlabel("Size of A")
     plt.ylabel("Time to compute")
